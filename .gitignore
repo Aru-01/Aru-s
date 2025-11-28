@@ -1,0 +1,6 @@
+.aru's_env
+api/__pycache__
+arus/__pycache__
+order/__pycache__
+product/__pycache__
+users/__pycache__

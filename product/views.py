@@ -1,11 +1,12 @@
 from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
 from product.models import Product, Category, Review
 from product.serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 from product.filters import ProductFilter
 from product.paginations import DefaultPagination
+from api.permissions import IsAdminOrReadOnly
 
 
 # Create your views here.
@@ -19,10 +20,14 @@ class ProductViewSet(ModelViewSet):
     search_fields = ["name", "description"]
     ordering_fields = ["price", "updated_at"]
 
+    permission_classes = [IsAdminOrReadOnly]
+
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.annotate(product_count=Count("products")).all()
     serializer_class = CategorySerializer
+    
+    permission_classes=[IsAdminOrReadOnly]
 
 
 class ReviewViewSet(ModelViewSet):

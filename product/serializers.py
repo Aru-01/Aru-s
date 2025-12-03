@@ -28,8 +28,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = [
             "id",
-            "name",
-            "description",
+            "user",
+            "comment",
         ]
 
     def create(self, validated_data):

@@ -4,6 +4,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     DestroyModelMixin,
 )
+from rest_framework.permissions import IsAuthenticated
 from order.models import Cart, CartItem, Order, OrderItem
 from order.serializers import (
     CartSerialzer,
@@ -19,6 +20,10 @@ class CartViewSet(
 ):
     queryset = Cart.objects.all()
     serializer_class = CartSerialzer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
 
 
 class CartItemViewSet(ModelViewSet):

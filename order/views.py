@@ -7,7 +7,7 @@ from rest_framework.mixins import (
     DestroyModelMixin,
 )
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from order.models import Cart, CartItem, Order, OrderItem
+from order.models import Cart, CartItem, Order
 from order import serializers as OrderSZ
 from order.services import OrderService
 

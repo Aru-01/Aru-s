@@ -2,8 +2,13 @@ from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
-from product.models import Product, Category, Review
-from product.serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from product.models import Product, Category, Review, ProductImage
+from product.serializers import (
+    ProductSerializer,
+    CategorySerializer,
+    ReviewSerializer,
+    ProductImageSerialilzer,
+)
 from product.filters import ProductFilter
 from product.paginations import DefaultPagination
 from api.permissions import IsAdminOrReadOnly
@@ -22,6 +27,17 @@ class ProductViewSet(ModelViewSet):
     ordering_fields = ["price", "updated_at"]
 
     permission_classes = [IsAdminOrReadOnly]
+
+
+class ProductImageViewSet(ModelViewSet):
+    serializer_class = ProductImageSerialilzer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        return ProductImage.objects.filter(product_id=self.kwargs["product_pk"])
+
+    def perform_create(self, serializer):
+        return serializer.save(product_id=self.kwargs["product_pk"])
 
 
 class CategoryViewSet(ModelViewSet):

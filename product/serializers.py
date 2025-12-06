@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from product.models import Product, Category, Review
+from product.models import Product, ProductImage, Category, Review
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -24,6 +24,12 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
+class ProductImageSerialilzer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+
 class SimpleUserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(method_name="get_current_user_name")
 
@@ -36,7 +42,7 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(method_name='get_user')
+    user = serializers.SerializerMethodField(method_name="get_user")
 
     class Meta:
         model = Review
@@ -48,7 +54,8 @@ class ReviewSerializer(serializers.ModelSerializer):
             "comment",
         ]
         read_only_fields = ["user", "product"]
-    def get_user(self,obj):
+
+    def get_user(self, obj):
         return SimpleUserSerializer(obj.user).data
 
     def create(self, validated_data):

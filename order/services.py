@@ -1,4 +1,5 @@
 from django.db import transaction
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from order.models import Order, OrderItem, Cart, CartItem
 
 
@@ -9,7 +10,9 @@ class OrderService:
             cart = Cart.objects.get(pk=cart_id)
             cart_items = cart.items.select_related("product").all()
 
-            total_price = sum([item.product.price * item.quantity for item in cart_items])
+            total_price = sum(
+                [item.product.price * item.quantity for item in cart_items]
+            )
 
             order = Order.objects.create(user_id=user_id, total_price=total_price)
 
@@ -26,3 +29,20 @@ class OrderService:
             OrderItem.objects.bulk_create(order_items)
             cart.delete()
             return order
+
+    @staticmethod
+    def cancel_order(order, user):
+        if user.is_staff:
+            order.status = Order.CANCELED
+            order.save()
+            return order
+
+        if order.user != user:
+            raise PermissionDenied({"detail": "You can Only cancel your own order."})
+
+        if order.status == Order.DELIVERED:
+            raise ValidationError({"detail": "You can not cancel this order "})
+
+        order.status = Order.CANCELED
+        order.save()
+        return order

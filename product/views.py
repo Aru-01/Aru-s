@@ -111,35 +111,35 @@ class ProductImageViewSet(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
-        return ProductImage.objects.filter(product_id=self.kwargs["product_pk"])
+        return ProductImage.objects.filter(product_id=self.kwargs.get("product_pk"))
 
     def perform_create(self, serializer):
         return serializer.save(product_id=self.kwargs["product_pk"])
-    
+
     @swagger_auto_schema(
         operation_summary="List product images",
-        operation_description="Retrieve all images for a specific product using product ID."
+        operation_description="Retrieve all images for a specific product using product ID.",
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_summary="Upload product image",
-        operation_description="Upload a new image for a product. ✅ Only admins are allowed."
+        operation_description="Upload a new image for a product. ✅ Only admins are allowed.",
     )
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_summary="Update product image",
-        operation_description="Update an existing product image. ✅ Only admins are allowed."
+        operation_description="Update an existing product image. ✅ Only admins are allowed.",
     )
     def update(self, request, *args, **kwargs):
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_summary="Delete product image",
-        operation_description="Delete a product image permanently. ✅ Only admins are allowed."
+        operation_description="Delete a product image permanently. ✅ Only admins are allowed.",
     )
     def destroy(self, request, *args, **kwargs):
         return super().destroy(request, *args, **kwargs)
@@ -163,7 +163,7 @@ class ReviewViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        return Review.objects.filter(product_id=self.kwargs["product_pk"])
+        return Review.objects.filter(product_id=self.kwargs.get("product_pk"))
 
     def get_serializer_context(self):
-        return {"product_id": self.kwargs["product_pk"]}
+        return {"product_id": self.kwargs.get("product_pk")}

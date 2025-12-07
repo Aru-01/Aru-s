@@ -11,23 +11,26 @@ class CategorySerializer(serializers.ModelSerializer):
     product_count = serializers.IntegerField(read_only=True)
 
 
+class ProductImageSerialilzer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+
 class ProductSerializer(serializers.ModelSerializer):
+    images = ProductImageSerialilzer(many=True, read_only=True)
+
     class Meta:
         model = Product
         fields = [
             "id",
             "name",
             "description",
+            "images",
             "price",
             "stock",
             "category",
         ]
-
-
-class ProductImageSerialilzer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ["id", "image"]
 
 
 class SimpleUserSerializer(serializers.ModelSerializer):

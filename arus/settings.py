@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "django_filters",
     "rest_framework",
+    "drf_yasg",
     "djoser",
     "api",
     "order",
@@ -140,4 +141,14 @@ DJOSER = {
         "user_create": "users.serializers.UserCreateSerializer",
         "current_user": "users.serializers.UserSerializer",
     },
+}
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter your JWT token in the formate: `JWT <your_token>` ",
+        },
+    }
 }

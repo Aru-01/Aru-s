@@ -105,7 +105,7 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
         fields = ["status"]
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderItemSerializer(serializers.ModelSerializer):
     product = SimpleProductSerializer()
 
     class Meta:
@@ -114,7 +114,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderSerializer(many=True)
+    items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order

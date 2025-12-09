@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "aurs/wsgi.py"
+      "dest": "arus/wsgi.py"
     }
   ]
 }

@@ -4,3 +4,5 @@ arus/__pycache__
 order/__pycache__
 product/__pycache__
 users/__pycache__
+.env
+db.sqlite3
